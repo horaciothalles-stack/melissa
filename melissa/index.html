@@ -141,27 +141,10 @@
     }
     .hrc-logo:hover { opacity: 1; }
 
-    .hrc-mark {
-      width: 30px;
-      height: 30px;
-      background: var(--orange);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Spectral', serif;
-      font-weight: 700;
-      font-size: 16px;
-      color: #000;
-      flex-shrink: 0;
-    }
-
-    .hrc-word {
-      font-size: 11.5px;
-      font-weight: 600;
-      letter-spacing: .11em;
-      text-transform: uppercase;
-      color: var(--t2);
+    .hrc-logo img {
+      height: 28px;
+      width: auto;
+      display: block;
     }
 
     /* Share button */
@@ -542,8 +525,7 @@
     <!-- Brand bar -->
     <div class="brand-bar">
       <a href="https://hrcstudio.com.br" target="_blank" rel="noopener" class="hrc-logo">
-        <div class="hrc-mark">H</div>
-        <span class="hrc-word">HRC Lab</span>
+        <img src="logo.png" alt="HRC Lab">
       </a>
       <button class="share-btn" id="shareBtn" title="Compartilhar" aria-label="Copiar link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -603,9 +585,9 @@
     // ── Identidade pessoal ─────────────────────────
     name:           'Melissa',                        // ← nome completo
     initials:       'M',                              // aparece se photo = null
-    photo:          null,                             // URL da foto ou null para usar iniciais
-    role:           'Co-founder & ??? na HRC Lab',    // ← cargo real
-    roleHighlight:  '???',                            // ← palavra(s) que ficam em laranja
+    photo:          'perfil.jpg',                             // URL da foto ou null para usar iniciais
+    role:           'Sócia & Diretora de Operações na HRC Lab',    // ← cargo real
+    roleHighlight:  'Diretora de Operações',                            // ← palavra(s) que ficam em laranja
 
     // ── Status (bolinha abaixo do avatar) ──────────
     statusText:   'Disponível para novos projetos',
@@ -620,19 +602,19 @@
         id:    'whatsapp',
         label: 'WhatsApp',
         desc:  'Conversa direta, sem enrolação',
-        url:   'https://wa.me/55839999999999',        // ← número real da Melissa
+        url:   'https://wa.me/558198345238',        // ← número real da Melissa
       },
       {
         id:    'frees',
         label: 'Frees.io',
         desc:  'Precificação inteligente para freelancers',
-        url:   'https://frees.io',
+        url:   'https://frees-io.lovable.app/',
       },
       {
         id:    'biz',
         label: 'Biz.io',
         desc:  'Gestão financeira para o seu negócio',
-        url:   'https://biz.io',
+        url:   'https://biz-io.lovable.app/',
       },
       {
         id:    'hrc',
