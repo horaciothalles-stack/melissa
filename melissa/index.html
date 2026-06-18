@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════╗
+  ║  HRC Lab — Link Bio Premium                          ║
+  ║  Template único · Configurável por sócio             ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  Deploy por subdomínio:                              ║
+  ║  → thalles.hrcstudio.com.br                          ║
+  ║  → melissa.hrcstudio.com.br                          ║
+  ║  → gabriel.hrcstudio.com.br                          ║
+  ║                                                      ║
+  ║  Para personalizar: edite apenas o objeto CONFIG     ║
+  ║  na seção <script> no final do arquivo.              ║
+  ╚══════════════════════════════════════════════════════╝
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">HRC Lab</title>
+  <meta name="theme-color" content="#090909">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Variables ─────────────────────────────────── */
+    :root {
+      --orange:    #ff7f00;
+      --o10:       rgba(255,127,0,.10);
+      --o18:       rgba(255,127,0,.18);
+      --o35:       rgba(255,127,0,.35);
+      --bg:        #090909;
+      --s1:        #111111;
+      --s2:        #181818;
+      --brd:       #1e1e1e;
+      --brd-h:     rgba(255,127,0,.42);
+      --t1:        #f0f0f0;
+      --t2:        #7a7a7a;
+      --t3:        #3a3a3a;
+      --green:     #22c55e;
+      --r:         13px;
+    }
+
+    /* ── Reset ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Base ──────────────────────────────────────── */
+    html { height: 100%; }
+
+    body {
+      min-height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--t1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 52px 20px;
+      overflow-x: hidden;
+    }
+
+    /* Dot-grid texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Bottom ambient glow */
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 260px;
+      background: radial-gradient(ellipse at bottom, rgba(255,127,0,.055) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Canvas ────────────────────────────────────── */
+    #bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Spotlight ─────────────────────────────────── */
+    #spotlight {
+      position: fixed;
+      left: 50%;
+      top: 40%;
+      width: 720px;
+      height: 720px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,127,0,.052) 0%, transparent 62%);
+      margin-left: -360px;
+      margin-top: -360px;
+      pointer-events: none;
+      z-index: 0;
+      will-change: transform;
+    }
+
+    /* ── Wrap ──────────────────────────────────────── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 430px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+    }
+
+    /* ── Brand bar ─────────────────────────────────── */
+    .brand-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      animation: fadeDown .5s .0s ease both;
+    }
+
+    .hrc-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: .85;
+      transition: opacity .2s;
+    }
+    .hrc-logo:hover { opacity: 1; }
+
+    .hrc-mark {
+      width: 30px;
+      height: 30px;
+      background: var(--orange);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Spectral', serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .hrc-word {
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      color: var(--t2);
+    }
+
+    /* Share button */
+    .share-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--s1);
+      border: 1px solid var(--brd);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color .22s, color .22s, box-shadow .22s;
+      color: var(--t2);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .share-btn:hover {
+      border-color: var(--brd-h);
+      color: var(--orange);
+      box-shadow: 0 0 18px var(--o10);
+    }
+    .share-btn svg { width: 15px; height: 15px; }
+
+    /* ── Profile ───────────────────────────────────── */
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      animation: fadeUp .6s .12s ease both;
+    }
+
+    /* Avatar */
+    .av-wrap {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 6px;
+    }
+
+    .av-ring {
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--orange)   0deg,
+        transparent    100deg,
+        var(--orange)  200deg,
+        transparent    280deg,
+        var(--orange)  360deg
+      );
+      animation: spinRing 5s linear infinite;
+    }
+    .av-ring::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--bg);
+    }
+
+    .av {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--s2);
+      border: 1.5px solid var(--brd);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Spectral', serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--orange);
+      overflow: hidden;
+      z-index: 2;
+      transition: box-shadow .35s;
+      cursor: default;
+    }
+    .av:hover { box-shadow: 0 0 36px var(--o18); }
+    .av img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+    @keyframes spinRing {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Status */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--t2);
+      letter-spacing: .025em;
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    .dot.off {
+      background: var(--t3);
+      box-shadow: none;
+      animation: none;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .35; }
+    }
+
+    /* Name */
+    .p-name {
+      font-family: 'Spectral', serif;
+      font-weight: 700;
+      font-size: clamp(27px, 7vw, 34px);
+      line-height: 1.05;
+      text-align: center;
+      letter-spacing: -.015em;
+      color: var(--t1);
+    }
+
+    /* Role */
+    .p-role {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--t2);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .p-role b {
+      color: var(--orange);
+      font-weight: 500;
+    }
+
+    /* Tags */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 3px;
+    }
+    .tag {
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--t3);
+      padding: 3px 9px;
+      border: 1px solid var(--brd);
+      border-radius: 100px;
+    }
+
+    /* ── Links ─────────────────────────────────────── */
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lnk {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--s1);
+      border: 1px solid var(--brd);
+      border-radius: var(--r);
+      color: var(--t1);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color .24s, transform .24s, box-shadow .24s;
+      animation: fadeUp .45s ease both;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Left-to-right shimmer on hover */
+    .lnk::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, var(--o10) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity .28s;
+      pointer-events: none;
+    }
+
+    .lnk:hover {
+      border-color: var(--brd-h);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 42px rgba(0,0,0,.45), 0 0 0 1px var(--o10);
+    }
+    .lnk:hover::before { opacity: 1; }
+    .lnk:active { transform: translateY(0); transition-duration: .1s; }
+
+    /* Icon box */
+    .lnk-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--brd);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background .24s, border-color .24s;
+      z-index: 1;
+    }
+    .lnk:hover .lnk-ico {
+      background: var(--o10);
+      border-color: var(--o35);
+    }
+    .lnk-ico svg { width: 19px; height: 19px; }
+
+    /* Text */
+    .lnk-txt { flex: 1; z-index: 1; overflow: hidden; }
+    .lnk-label {
+      font-weight: 500;
+      font-size: 13.5px;
+      display: block;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lnk-desc {
+      font-size: 11px;
+      color: var(--t2);
+      display: block;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Arrow */
+    .lnk-arr {
+      color: var(--t3);
+      flex-shrink: 0;
+      z-index: 1;
+      transition: color .24s, transform .24s;
+    }
+    .lnk-arr svg { width: 15px; height: 15px; display: block; }
+    .lnk:hover .lnk-arr { color: var(--orange); transform: translateX(4px); }
+
+    /* Ripple */
+    .rpl {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,127,0,.14);
+      transform: scale(0);
+      animation: rplAnim .65s linear;
+      pointer-events: none;
+    }
+    @keyframes rplAnim { to { transform: scale(4.5); opacity: 0; } }
+
+    /* ── Divider ───────────────────────────────────── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--brd) 25%, var(--brd) 75%, transparent);
+      animation: fadeUp .4s .82s ease both;
+    }
+
+    /* ── Viral footer ──────────────────────────────── */
+    .viral {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: fadeUp .45s .9s ease both;
+    }
+    .viral-txt {
+      font-size: 11px;
+      color: var(--t3);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .viral-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--t2);
+      padding: 9px 20px;
+      border: 1px solid var(--brd);
+      border-radius: 100px;
+      background: var(--s1);
+      cursor: pointer;
+      transition: border-color .24s, color .24s, box-shadow .24s, transform .24s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .viral-btn:hover {
+      border-color: var(--brd-h);
+      color: var(--orange);
+      box-shadow: 0 0 28px var(--o10);
+      transform: translateY(-1px);
+    }
+    .viral-btn svg { width: 14px; height: 14px; transition: transform .24s; }
+    .viral-btn:hover svg { transform: translateX(4px); }
+
+    /* ── Toast ─────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: var(--s2);
+      border: 1px solid var(--brd);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-size: 13px;
+      color: var(--t1);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .3s, transform .3s;
+      white-space: nowrap;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast-icon { width: 15px; height: 15px; color: var(--green); flex-shrink: 0; }
+
+    /* ── Keyframes ─────────────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Accessibility ─────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    /* ── Mobile fine-tuning ────────────────────────── */
+    @media (max-width: 480px) {
+      body { padding: 40px 16px; }
+      .wrap { gap: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg"></canvas>
+  <div id="spotlight"></div>
+
+  <div class="toast" id="toast">
+    <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    Link copiado para a área de transferência
+  </div>
+
+  <div class="wrap">
+
+    <!-- Brand bar -->
+    <div class="brand-bar">
+      <a href="https://hrcstudio.com.br" target="_blank" rel="noopener" class="hrc-logo">
+        <div class="hrc-mark">H</div>
+        <span class="hrc-word">HRC Lab</span>
+      </a>
+      <button class="share-btn" id="shareBtn" title="Compartilhar" aria-label="Copiar link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Profile -->
+    <div class="profile">
+      <div class="av-wrap">
+        <div class="av-ring"></div>
+        <div class="av" id="avEl"></div>
+      </div>
+      <div class="status">
+        <div class="dot" id="dotEl"></div>
+        <span id="statusEl"></span>
+      </div>
+      <h1 class="p-name" id="nameEl"></h1>
+      <p class="p-role" id="roleEl"></p>
+      <div class="tags" id="tagsEl"></div>
+    </div>
+
+    <!-- Links -->
+    <div class="links" id="linksEl"></div>
+
+    <div class="divider"></div>
+
+    <!-- Viral footer -->
+    <div class="viral">
+      <span class="viral-txt">Feito com identidade HRC Lab</span>
+      <a href="https://hrcstudio.com.br" target="_blank" rel="noopener" class="viral-btn">
+        Quero criar o meu igual
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+  /* ================================================================
+     ✦  CONFIGURAÇÃO — edite este objeto para cada sócio
+     ================================================================
+
+     THALLES  → thalles.hrcstudio.com.br
+     MELISSA  → melissa.hrcstudio.com.br
+     GABRIEL  → gabriel.hrcstudio.com.br
+
+     Para cada versão, altere apenas os valores abaixo.
+  ================================================================ */
+  const CONFIG = {
+
+    // ── Identidade pessoal ─────────────────────────
+    name:           'Melissa',                        // ← nome completo
+    initials:       'M',                              // aparece se photo = null
+    photo:          null,                             // URL da foto ou null para usar iniciais
+    role:           'Co-founder & ??? na HRC Lab',    // ← cargo real
+    roleHighlight:  '???',                            // ← palavra(s) que ficam em laranja
+
+    // ── Status (bolinha abaixo do avatar) ──────────
+    statusText:   'Disponível para novos projetos',
+    statusActive:  true,            // true = verde piscando | false = cinza
+
+    // ── Tags ──────────────────────────────────────
+    tags: ['Marketing Digital', 'Design', 'SaaS'],   // ← ajuste as tags
+
+    // ── Links ─────────────────────────────────────
+    links: [
+      {
+        id:    'whatsapp',
+        label: 'WhatsApp',
+        desc:  'Conversa direta, sem enrolação',
+        url:   'https://wa.me/55839999999999',        // ← número real da Melissa
+      },
+      {
+        id:    'frees',
+        label: 'Frees.io',
+        desc:  'Precificação inteligente para freelancers',
+        url:   'https://frees.io',
+      },
+      {
+        id:    'biz',
+        label: 'Biz.io',
+        desc:  'Gestão financeira para o seu negócio',
+        url:   'https://biz.io',
+      },
+      {
+        id:    'hrc',
+        label: 'HRC Lab',
+        desc:  'Transformamos marcas em ativos de alto valor',
+        url:   'https://hrcstudio.com.br',
+      },
+    ],
+
+  };
+
+  /* ================================================================
+     Ícones SVG inline (não altere)
+  ================================================================ */
+  const ICONS = {
+    whatsapp: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`,
+
+    frees: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </svg>`,
+
+    biz: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+    </svg>`,
+
+    hrc: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="2" y1="12" x2="22" y2="12"/>
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+    </svg>`,
+
+    arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>`,
+  };
+
+  const ICON_COLORS = {
+    whatsapp: '#25D366',
+    frees:    '#ff7f00',
+    biz:      '#ff7f00',
+    hrc:      '#ff7f00',
+  };
+
+  /* ================================================================
+     Preenche o DOM
+  ================================================================ */
+  document.title = `${CONFIG.name} — HRC Lab`;
+
+  // Avatar
+  const avEl = document.getElementById('avEl');
+  avEl.innerHTML = CONFIG.photo
+    ? `<img src="${CONFIG.photo}" alt="${CONFIG.name}">`
+    : CONFIG.initials;
+
+  // Status
+  const dotEl = document.getElementById('dotEl');
+  document.getElementById('statusEl').textContent = CONFIG.statusText;
+  if (!CONFIG.statusActive) dotEl.classList.add('off');
+
+  // Nome
+  document.getElementById('nameEl').textContent = CONFIG.name;
+
+  // Role com highlight
+  const safeRole = CONFIG.role.replace(/&/g, '&amp;');
+  const safeHL   = CONFIG.roleHighlight.replace(/&/g, '&amp;');
+  document.getElementById('roleEl').innerHTML = safeHL
+    ? safeRole.replace(safeHL, `<b>${safeHL}</b>`)
+    : safeRole;
+
+  // Tags
+  const tagsEl = document.getElementById('tagsEl');
+  (CONFIG.tags || []).forEach(t => {
+    const s = document.createElement('span');
+    s.className = 'tag';
+    s.textContent = t;
+    tagsEl.appendChild(s);
+  });
+
+  // Links
+  const linksEl = document.getElementById('linksEl');
+  CONFIG.links.forEach((lnk, i) => {
+    const a = document.createElement('a');
+    a.href   = lnk.url;
+    a.target = '_blank';
+    a.rel    = 'noopener noreferrer';
+    a.className = 'lnk';
+    a.style.animationDelay = `${0.28 + i * 0.09}s`;
+
+    const color = ICON_COLORS[lnk.id] || '#ff7f00';
+    const icon  = ICONS[lnk.id] || ICONS.hrc;
+
+    a.innerHTML = `
+      <div class="lnk-ico" style="color:${color}">${icon}</div>
+      <div class="lnk-txt">
+        <span class="lnk-label">${lnk.label}</span>
+        <span class="lnk-desc">${lnk.desc}</span>
+      </div>
+      <span class="lnk-arr">${ICONS.arrow}</span>
+    `;
+
+    // Ripple
+    a.addEventListener('click', function(e) {
+      const rpl  = document.createElement('span');
+      rpl.className = 'rpl';
+      const rect = this.getBoundingClientRect();
+      const sz   = Math.max(rect.width, rect.height);
+      rpl.style.cssText = `
+        width:${sz}px; height:${sz}px;
+        left:${e.clientX - rect.left - sz/2}px;
+        top:${e.clientY - rect.top  - sz/2}px;
+      `;
+      this.appendChild(rpl);
+      setTimeout(() => rpl.remove(), 700);
+    });
+
+    linksEl.appendChild(a);
+  });
+
+  /* ================================================================
+     Share button + toast
+  ================================================================ */
+  const toast    = document.getElementById('toast');
+  const shareBtn = document.getElementById('shareBtn');
+  let toastTimer = null;
+
+  shareBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(location.href).catch(() => {});
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+  });
+
+  /* ================================================================
+     Mouse spotlight (desktop)
+  ================================================================ */
+  const spotlight = document.getElementById('spotlight');
+  let sX = window.innerWidth / 2;
+  let sY = window.innerHeight * .4;
+
+  function updateSpot(x, y) {
+    spotlight.style.transform = `translate(${x - window.innerWidth/2}px, ${y - window.innerHeight*.4}px)`;
+  }
+
+  document.addEventListener('mousemove', e => {
+    sX = e.clientX;
+    sY = e.clientY;
+    updateSpot(sX, sY);
+  });
+
+  /* ================================================================
+     Canvas — Particle network
+  ================================================================ */
+  const canvas = document.getElementById('bg');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Dot {
+    constructor() { this.reset(true); }
+    reset(rand) {
+      this.x  = rand ? Math.random() * W : (Math.random() > .5 ? 0 : W);
+      this.y  = rand ? Math.random() * H : Math.random() * H;
+      this.vx = (Math.random() - .5) * .22;
+      this.vy = (Math.random() - .5) * .22;
+      this.r  = Math.random() * 1.1 + .4;
+      this.a  = Math.random() * .32 + .06;
+    }
+    step() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < -5 || this.x > W + 5 || this.y < -5 || this.y > H + 5) this.reset(false);
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,127,0,${this.a})`;
+      ctx.fill();
+    }
+  }
+
+  const MAX_PTS  = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 12000), 65);
+  const MAX_DIST = 125;
+  const dots     = Array.from({ length: MAX_PTS }, () => new Dot());
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw dots
+    for (const d of dots) { d.step(); d.draw(); }
+
+    // Draw connections
+    for (let i = 0; i < dots.length; i++) {
+      for (let j = i + 1; j < dots.length; j++) {
+        const dx = dots[i].x - dots[j].x;
+        const dy = dots[i].y - dots[j].y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < MAX_DIST * MAX_DIST) {
+          const alpha = (1 - Math.sqrt(d2) / MAX_DIST) * .11;
+          ctx.beginPath();
+          ctx.moveTo(dots[i].x, dots[i].y);
+          ctx.lineTo(dots[j].x, dots[j].y);
+          ctx.strokeStyle = `rgba(255,127,0,${alpha})`;
+          ctx.lineWidth = .6;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+  tick();
+  </script>
+
+</body>
+</html>
